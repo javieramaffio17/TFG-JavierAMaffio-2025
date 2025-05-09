@@ -3,6 +3,13 @@
 	include 'sweetAlert.php';
 		
 	session_start();
+
+	echo "<script>console.log('Debug Objects: " . $_SESSION['strID_Usuario'] . "' );</script>";
+	echo "<script>console.log('Debug Objects: " . $_SESSION['nroEmpleado'] . "' );</script>";
+	echo "<script>console.log('Debug Objects: " . $_SESSION['strNombre'] . "' );</script>";
+	echo "<script>console.log('Debug Objects: " . $_SESSION['strApellidos'] . "' );</script>";
+	echo "<script>console.log('Debug Objects: " . $_SESSION['strEmail'] . "' );</script>";
+	echo "<script>console.log('Debug Objects: " . $_SESSION['strRol'] . "' );</script>";
 ?>
 
 <!DOCTYPE html>
@@ -40,12 +47,16 @@
 		<div class="container">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Sistema de Inventario de Portátiles - Administrador</h5>
+					<h5 class="modal-title">Sistema de Inventario de Portátiles</h5>
 				</div>
 				<div class="modal-body">
-					<button id="BotonUsuario" class="btn btn-primary w-100 mb-2" onclick="location.href='Agregar_Usuario.php'">Agregar Usuario</button>				
-					<button id="BotonUsuario" class="btn btn-success w-100 mb-2" onclick="location.href='Modificar_Usuario.php'">Modificar Usuario</button>
-					<button id="BotonUsuario" class="btn btn-primary w-100 mb-2" onclick="location.href='Eliminar_Usuario.php'">Eliminar Usuario</button>	
+					<button id="botonAdminitrados" class="btn btn-primary w-100 mb-2" onclick="location.href='Registro_Equipos.php'">Registro de Equipos</button>
+					<button id="BotonUsuario" class="btn btn-success w-100 mb-2" onclick="location.href='Busqueda_Equipo.php'">Busqueda de Equipos</button>
+					<button id="BotonUsuario" class="btn btn-primary w-100 mb-2" onclick="location.href='Generar_Tiquete_Equipo.php'">Generar Tiquete de Mantenimiento</button>
+					<button id="BotonUsuario" class="btn btn-success w-100 mb-2" onclick="location.href='Cerrar_Tiquete_Equipo.php'">Cerrar Tiquete de Mantenimiento</button>
+					<button id="BotonUsuario" class="btn btn-primary w-100 mb-2" onclick="location.href='Reporte_Mantenimientos.php'">Reporte de Mantenimientos</button>
+					<button id="BotonUsuario" class="btn btn-success w-100 mb-2" onclick="location.href='Reporte_Equipos.php'">Reporte de Equipos</button>
+					<button id="BotonUsuario" class="btn btn-primary w-100 mb-2" onclick="location.href='Reporte_Usuarios.php'">Reporte de Usuarios</button>
 				</div>
 			</div>
 		</div>

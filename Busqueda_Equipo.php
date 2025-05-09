@@ -6,41 +6,42 @@
 			
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {			
 		// Obtiene los datos del formulario
-		$strID_Equipo  = $_POST['strID_Equipo'];
-		$strSerie = $_POST['strSerie'];
-		$strModelo = $_POST['strModelo'];
-		$strDescripcion = $_POST['strDescripcion'];
-		$strID_Usuario = $_POST['strID_Usuario'];
-		$strCondicion = $_POST['strCondicion'];
-		$dtFechaAsignacion = $_POST['dtFechaAsignacion'];
-		
-		// Prepara la consulta SQL para insertar un nuevo usuario
-		$sql = "INSERT INTO equipos (`strID_Equipo`, `strSerie`, `strModelo`, `strDescripcion`, `strID_Usuario`, `strCondicion`, `dtFechaAsignacion`) VALUES ('$strID_Equipo', '$strSerie', '$strModelo', '$strDescripcion', '$strID_Usuario', '$strCondicion', '$dtFechaAsignacion');";
+		$strID_Equipo = trim($_POST['strID_Equipo']);
 
-		// Ejecuta la consulta
-		if ($conn->query($sql) === TRUE) {				
+		$sql = "SELECT * FROM equipos WHERE strID_Equipo='$strID_Equipo'";
+		$result = $conn->query($sql);
+
+		if ($result->num_rows > 0) {
+			$row = $result->fetch_assoc();	
+			
 			echo "<script>
 					Swal.fire({
 					icon: 'success',
-					title: 'Registro...!',
-					text: 'Equipo Registrado exitosamente.', 
-					confirmButtonText: 'Continuar a la página Principal.',
-					}).then((result) => {
-						  if (result.isConfirmed) {
-							  window.location.href = 'Principal.php'
-						  }
+					title: 'Busqueda...',
+					text: 'El Equipo Se Encontró.', 
+					confirmButtonText: 'Aceptar.',
+					}).then((result) => {						 
 					  });
-				</script>"; 			
+				</script>"; 	
+			
+			// Obtiene los datos del formulario
+			$strID_Equipo = trim($row['strID_Equipo']);
+			$strSerie = trim($row['strSerie']);
+			$strModelo = trim($row['strModelo']);
+			$strDescripcion = trim($row['strDescripcion']);
+			$strID_Usuario = trim($row['strID_Usuario']);
+			$strCondicion = trim($row['strCondicion']);
+			$dtFechaAsignacion = trim($row['dtFechaAsignacion']);			
 		} else {
 			echo "<script>
 					Swal.fire({
 					icon: 'error',
 					title: 'ERROR',
-					text: 'El Equipo No Se Registró correctamente.', 
+					text: 'El Equipo No Se Encontró.', 
 					confirmButtonText: 'Volver a intentar.',
 					}).then((result) => {
 						  if (result.isConfirmed) {
-							  window.location.href = 'Registro_Equipos.php'
+							  window.location.href = 'Busqueda_Equipo.php'
 						  }
 					  });
 				</script>"; 	
@@ -84,58 +85,41 @@
 		<div class="container">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 id="Registrar_Label">Registar equipo</h5>
+					<h5 id="Buscar_Label">Busqueda de Equipos</h5>
 				</div>
 				<div class="modal-body">
-					<form id="Registrarse" method="post" action="Registro_Equipos.php">
+					<form id="Busqueda" method="post" action="Busqueda_Equipo.php">
 						<div id="strID_EquipoField" class="mb-3">
 							<label class="form-label">ID Equipo</label>
-							<input type="text" name="strID_Equipo" id="strID_Equipo" class="form-control" required>
+							<input type="text" name="strID_Equipo" id="strID_Equipo" class="form-control" value="<? echo $strID_Equipo; ?>">
 						</div>
 						<div id="strSerieField" class="mb-3">
 							<label class="form-label">Serie</label>
-							<input type="text" name="strSerie" id="strSerie" class="form-control" required>
-						</div>
+							<input type="text" name="strSerie" id="strSerie" class="form-control" value="<? echo $strSerie; ?>" style="background-color: lightgray;" readonly>
+						</div>						
 						<div id="strModeloField" class="mb-3">
 							<label class="form-label">Modelo</label>
-							<input type="text" name="strModelo" id="strModelo" class="form-control" required>
+							<input type="text" name="strModelo" id="strModelo" class="form-control" value="<? echo $strModelo; ?>" style="background-color: lightgray;" readonly>
 						</div>
 						<div id="strDescripcionField" class="mb-3">
 							<label class="form-label">Descripcion</label>
-							<input type="text" name="strDescripcion" id="strDescripcion" class="form-control" required>
+							<input type="text" name="strDescripcion" id="strDescripcion" class="form-control" value="<? echo $strDescripcion; ?>" style="background-color: lightgray;" readonly>
 						</div>	
 						
 						<div id="strID_UsuarioField" class="mb-3">
 							<label class="form-label">ID_Usuario</label>
-							<select class="form-select" name="strID_Usuario" id="strID_Usuario" required>
-								<option value="" disabled selected>Elige un usuario</option>
-								<?php   
-									require 'conexion.php';
-
-									$sql2 = "select * from usuarios order by strID_Usuario asc";
-									$result = $conn->query($sql2);	
-
-									while($row = $result->fetch_assoc())
-									{   
-										$strID_Usuario = $row['strID_Usuario'];
-										$strNombre = $row['strNombre'];
-										$strApellidos = $row['strApellidos'];								
-										echo "<option value='$strID_Usuario'>$strNombre  $strApellidos</option>";
-									}
-								?>
-							</select>
-						</div>
-						
+							<input type="text" name="strID_Usuario" id="strID_Usuario" class="form-control" value="<? echo $strID_Usuario; ?>" style="background-color: lightgray;" readonly>
+						</div>						
 						
 						<div id="strCondicionField" class="mb-3">
 							<label class="form-label">Condicion</label>
-							<input type="text" name="strCondicion" id="strCondicion" class="form-control" required>
-						</div>						
+							<input type="text" name="strCondicion" id="strCondicion" class="form-control" value="<? echo $strCondicion; ?>" style="background-color: lightgray;" readonly>
+						</div>	
 						<div id="dtFechaAsignacionField" class="mb-3">
 							<label class="form-label">Fecha Asignacion</label>
-							<input type="date" name="dtFechaAsignacion" id="dtFechaAsignacion" class="form-control" min="<?= date('Y-m-d'); ?>" required>	
-						</div>									
-						<button type="submit" class="btn btn-primary w-100">Agregar Equipo</button>
+							<input type="text" name="dtFechaAsignacion" id="dtFechaAsignacion" class="form-control" value="<? echo $dtFechaAsignacion; ?>" style="background-color: lightgray;" readonly>
+						</div>	
+						<button type="submit" class="btn btn-primary w-100">Buscar Equipo</button>
 					</form>
 				</div>
 			</div>

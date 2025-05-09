@@ -7,7 +7,6 @@
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {			
 		$correo = trim($_POST['correo']);
 		$contraseña = trim($_POST['contraseña']);
-		$rol = "Administrador";
 					
 		$sql = "SELECT * FROM usuarios WHERE strEmail='$correo'";
 		$result = $conn->query($sql);
@@ -16,41 +15,26 @@
 			$row = $result->fetch_assoc();
 						
 			if ($contraseña == trim($row['strPassword'])) {	
-				if ($rol == trim($row['strRol'])) {	
-						// Obtiene los datos del formulario			
-						$_SESSION['strID_Usuario'] = trim($row['strID_Usuario']);
-						$_SESSION['nroEmpleado'] = trim($row['nroEmpleado']);
-						$_SESSION['strNombre'] = trim($row['strNombre']);
-						$_SESSION['strApellidos'] = trim($row['strApellidos']);
-						$_SESSION['strEmail'] = trim($row['strEmail']);
-						$_SESSION['strRol'] = trim($row['strRol']);	
-
-						echo "<script>
-								Swal.fire({
-								icon: 'success',
-								title: 'Logueo...!',
-								text: 'Usuario Logueado correctamente ADMIN.', 
-								confirmButtonText: 'Continuar a la página Principal.',
-								}).then((result) => {
-									  if (result.isConfirmed) {
-										  window.location.href = 'Principal_Admin.php'
-									  }
-								  });
-							</script>"; 	
-				} else {
-					echo "<script>
-						Swal.fire({
-						icon: 'error',
-						title: 'ERROR',
-						text: 'El usuario no es Administrador.', 
-						confirmButtonText: 'Volver a intentar.',
-						}).then((result) => {
-							  if (result.isConfirmed) {
-								  window.location.href = 'Login_Admin.php'
-							  }
-						  });
-					</script>"; 
-				}				
+				// Obtiene los datos del formulario			
+				$_SESSION['strID_Usuario'] = trim($row['strID_Usuario']);
+				$_SESSION['nroEmpleado'] = trim($row['nroEmpleado']);
+				$_SESSION['strNombre'] = trim($row['strNombre']);
+				$_SESSION['strApellidos'] = trim($row['strApellidos']);
+				$_SESSION['strEmail'] = trim($row['strEmail']);
+				$_SESSION['strRol'] = trim($row['strRol']);	
+		
+				echo "<script>
+					Swal.fire({
+					icon: 'success',
+					title: 'Logueo...!',
+					text: 'Usuario Logueado correctamente.', 
+					confirmButtonText: 'Continuar a la página Principal.',
+					}).then((result) => {
+						  if (result.isConfirmed) {
+							  window.location.href = 'Principal.php'
+						  }
+					  });
+				</script>"; 			
 			} else {
 				echo "<script>
 					Swal.fire({
@@ -60,7 +44,7 @@
 					confirmButtonText: 'Volver a intentar.',
 					}).then((result) => {
 						  if (result.isConfirmed) {
-							  window.location.href = 'Login_Admin.php'
+							  window.location.href = 'Login.php'
 						  }
 					  });
 				</script>"; 
@@ -74,7 +58,7 @@
 					confirmButtonText: 'Volver a intentar.',
 					}).then((result) => {
 						  if (result.isConfirmed) {
-							  window.location.href = 'Login_Admin.php'
+							  window.location.href = 'Login.php'
 						  }
 					  });
 				</script>"; 
@@ -121,7 +105,7 @@
 					<h5 id="Login_Label" class="modal-title">Autenticación</h5>
 				</div>
 				<div class="modal-body">
-					<form id="Login" method="post" action="Login_Admin.php">
+					<form id="Login" method="post" action="Login.php">
 						<div id="email" class="mb-3">
 							<label class="form-label">Correo Electrónico</label>
 							<input type="email" name="correo" id="correo" class="form-control" required>
