@@ -13,10 +13,9 @@
 		$strEmail = $_POST['strEmail'];
 		$strRol = $_POST['strRol'];
 		$dtFecha = $_POST['dtFecha'];
-		$strPassword = $_POST['strPassword'];
 
 		// Prepara la consulta SQL para insertar un nuevo usuario
-		$sql = "INSERT INTO `usuarios` (`strID_Usuario`, `nroEmpleado`, `strNombre`, `strApellidos`, `strEmail`, `strRol`, `dtFecha`, `strPassword`) VALUES ('$strID_Usuario', '$nroEmpleado', '$strNombre', '$strApellidos', '$strEmail', '$strRol', '$dtFecha', '$strPassword');";
+		$sql = "INSERT INTO `usuarios` (`strID_Usuario`, `nroEmpleado`, `strNombre`, `strApellidos`, `strEmail`, `strRol`, `dtFecha`, `strPassword`, `boolPrimeraVez`) VALUES ('$strID_Usuario', '$nroEmpleado', '$strNombre', '$strApellidos', '$strEmail', '$strRol', '$dtFecha', NULL,0);";
 
 		// Ejecuta la consulta
 		if ($conn->query($sql) === TRUE) {			
@@ -54,9 +53,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Metalco</title>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-		<!--<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>-->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-		<link rel="stylesheet" href="styles.css"> <!-- Enlace al archivo CSS -->
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 	</head>
 
@@ -109,16 +106,16 @@
 						</div>		
 						<div id="strRolField" class="mb-3">
 							<label class="form-label">Rol</label>
-							<input type="text" name="strRol" id="strRol" class="form-control" required>
+							<select name="strRol" id="strRol">
+								<option value="Tecnico">Técnico</option>
+								<option value="Empleado">Empleado</option>
+								<option value="Administrador">Administrador</option>
+							</select>
 						</div>
 						<div id="dtFechaField" class="mb-3">
-							<label class="form-label">Fecha</label>
-							<input type="date" name="dtFecha" id="dtFecha" class="form-control" min="<?= date('Y-m-d'); ?>" required>	
+							<label class="form-label">Fecha de Ingreso</label>
+							<input type="date" name="dtFecha" id="dtFecha" class="form-control" required>	
 						</div>		
-						<div id="strPasswordField" class="mb-3">
-							<label class="form-label">Password</label>
-							<input type="password" name="strPassword" id="strPassword" class="form-control" required>
-						</div>
 						<button type="submit" class="btn btn-primary w-100">Aceptar</button>
 					</form>
 				</div>

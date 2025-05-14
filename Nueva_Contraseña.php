@@ -44,60 +44,46 @@
 					confirmButtonText: 'Volver a intentar.',
 					}).then((result) => {
 						if (result.isConfirmed) {
-							window.location.href = 'Eliminar_Usuario.php'
+							window.location.href = 'Modificar_Usuario.php'
 						}
 					});
 				</script>"; 	
 		}
-	} else if ($accion === "eliminar") {
+	} else if ($accion === "nueva") {
 		// Obtiene los datos del formulario
-		$strID_Usuario = trim($_POST['strID_Usuario_Eliminar']);
-		$nroEmpleado = trim($_POST['nroEmpleado']);
-		$strNombre = trim($_POST['strNombre']);
-		$strApellidos = trim($_POST['strApellidos']);
-		$strEmail = trim($_POST['strEmail']);
-		$strRol = trim($_POST['strRol']);
-		$dtFecha = trim($_POST['dtFecha']);
+		$strID_Usuario = trim($_POST['strID_Usuario_Modificar']);
 
 		// Prepara la consulta SQL para insertar un nuevo usuario
-		$sql = "DELETE FROM usuarios WHERE `strID_Usuario`='$strID_Usuario'";
-		
+		$sql = "UPDATE usuarios SET `strPassword`=NULL, boolPrimeraVez=0 WHERE strID_Usuario='$strID_Usuario'";
+
 		// Ejecuta la consulta
 		if ($conn->query($sql) === TRUE) {	
 			echo "<script>
-					Swal.fire({
-					icon: 'warning',
-					title: 'Registro...!',
-					showCancelButton: true,
-					confirmButtonColor: '#d33',
-  					cancelButtonColor: '#3085d6',
-					text: '¿Está Seguro que Desea Eliminar el Usuario?', 
-					confirmButtonText: 'Si, Eliminar.',
-					cancelButtonText: 'Cancelar.',
-					}).then((result) => {
-						if (result.isConfirmed) {
-							Swal.fire({
-							title: 'Eliminado',
-							text: 'Usuario Eliminado Correctamente...',
-							icon: 'success'
-						});
-					}
-				});
-				</script>"; 
+						Swal.fire({
+						icon: 'success',
+						title: 'Registro...!',
+						text: 'Contraseña Inicializada Exitosamente.', 
+						confirmButtonText: 'Volver a la Página de Logueo.',
+						}).then((result) => {
+							  if (result.isConfirmed) {
+								  window.location.href = 'Login.php'
+							  }
+						  });
+					</script>"; 			
 		} else {
 			echo "<script>
-					Swal.fire({
-					icon: 'error',
-					title: 'ERROR',
-					text: 'El Usuario No Se Modificó correctamente.', 
-					confirmButtonText: 'Volver a intentar.',
-					}).then((result) => {
-						if (result.isConfirmed) {
-							window.location.href = 'Eliminar_Usuario.php'
-						}
-					});
-				</script>"; 	
-		}						
+						Swal.fire({
+						icon: 'error',
+						title: 'ERROR',
+						text: 'La Contraseña No Se Inicializó Correctamente.', 
+						confirmButtonText: 'Volver a intentar.',
+						}).then((result) => {
+							  if (result.isConfirmed) {
+								  window.location.href = 'Crear_Contraseña.php'
+							  }
+						  });
+					</script>"; 	
+		}
 	}
 ?>
 
@@ -137,11 +123,11 @@
 		<div class="container">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 id="Registrarse_Label">Eliminar Usuario</h5>
+					<h5 id="Registrarse_Label">Nueva Contraseña</h5>
 				</div>
 				<div class="modal-body">
-					<form id="Buscar" method="post" action="Eliminar_Usuario.php">
-						<input type="hidden" id="ACCION" name="ACCION" value="buscar" />
+					<form id="Buscar" method="post" action="Nueva_Contraseña.php">
+						<input type="hidden" id="ACCION" name="ACCION" value="buscar" />					
 						<div id="strID_UsuarioField" class="mb-3">
 							<label class="form-label">ID Usuario</label>
 							<input type="text" name="strID_Usuario" id="strID_Usuario" class="form-control" value="<? echo $strID_Usuario; ?>" required>
@@ -156,9 +142,9 @@
 		<div class="container">
 			<div class="modal-content">
 				<div class="modal-body">
-					<form id="Agregar" method="post" action="Eliminar_Usuario.php">
-						<input type="hidden" id="ACCION" name="ACCION" value="eliminar" />
-						<input type="hidden" id="strID_Usuario_Eliminar" name="strID_Usuario_Eliminar" value="<? echo $strID_Usuario; ?>" style="background-color: lightgray;" readonly/>
+					<form id="Agregar" method="post" action="Nueva_Contraseña.php">
+						<input type="hidden" id="ACCION" name="ACCION" value="nueva" />
+						<input type="hidden" id="strID_Usuario_Modificar" name="strID_Usuario_Modificar" value="<? echo $strID_Usuario; ?>" style="background-color: lightgray;" readonly/>
 						<div id="nroEmpleadoField" class="mb-3">
 							<label class="form-label">Número de Empleado</label>
 							<input type="text" name="nroEmpleado" id="nroEmpleado" class="form-control" value="<? echo $nroEmpleado; ?>" style="background-color: lightgray;" readonly>
@@ -181,9 +167,9 @@
 						</div>
 						<div id="dtFechaField" class="mb-3">
 							<label class="form-label">Fecha</label>
-							<input type="date" name="dtFecha" id="dtFecha" class="form-control" value="<? echo $dtFecha; ?>" style="background-color: lightgray;" readonly>	
+							<input type="date" name="dtFecha" id="dtFecha" class="form-control" min="<?= date('Y-m-d'); ?>" value="<? echo $dtFecha; ?>" style="background-color: lightgray;" readonly>	
 						</div>	
-						<button type="submit" class="btn btn-primary w-100">Eliminar</button>
+						<button type="submit" class="btn btn-primary w-100">Nueva Contraseña</button>
 					</form>
 				</div>
 			</div>

@@ -3,18 +3,21 @@
 	include 'sweetAlert.php';
 	
 	session_start();
-			
+
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {			
 		$accion = $_POST['ACCION'];
 		
-		if ($accion === "buscar") {
+		if ($accion === "buscar") {		
 			// Obtiene los datos del formulario
 			$strID_Equipo = trim($_POST['strID_Equipo']);
 
 			$sql = "SELECT * FROM equipos WHERE strID_Equipo='$strID_Equipo'";
 			$result = $conn->query($sql);
+			
+			echo "<script>console.log('Debug Objects: " . $sql . "' );</script>";
 
 			if ($result->num_rows > 0) {
+				echo "<script>console.log('Debug Objects: entra if' );</script>";
 				$row = $result->fetch_assoc();	
 
 				echo "<script>
@@ -26,15 +29,13 @@
 						}).then((result) => {						 
 						  });
 					</script>"; 	
-
+	
 				// Obtiene los datos del formulario
-				$strID_Equipo = $row['strID_Equipo'];
-				$strSerie = $row['strSerie'];
-				$strModelo = $row['strModelo'];
-				$strDescripcion = $row['strDescripcion'];
-				$strID_Usuario = $row['strID_Usuario'];
-				$strCondicion = $row['strCondicion'];
-				$dtFechaAsignacion = $row['dtFechaAsignacion'];			
+				$strID_Equipo = trim($row['strID_Equipo']);
+				$strSerie = trim($row['strSerie']);
+				$strModelo = trim($row['strModelo']);
+				$strDescripcion = trim($row['strDescripcion']);
+				$strCondicion = trim($row['strCondicion']);
 			} else {
 				echo "<script>
 						Swal.fire({
@@ -44,19 +45,19 @@
 						confirmButtonText: 'Volver a intentar.',
 						}).then((result) => {
 							  if (result.isConfirmed) {
-								  window.location.href = 'Generar_Tiquete_Equipo.php'
+								  window.location.href = 'Asignar_Equipo_Usuario.php'
 							  }
 						  });
 					</script>"; 	
-			}			
-		} else if ($accion === "agregar") {
+			}
+		} else if ($accion === "asignar") {
 			// Obtiene los datos del formulario
-			$strID_Equipo = $_POST['strID_Equipo_Tiquete'];
-			$dtFechaIngreso = $_POST['dtFechaIngreso'];
-			$strDescripcion = $_POST['strDescripcion'];
-
+			$strID_Equipo = $_POST['strID_Equipo_Asignar'];
+			$strID_Usuario = $_POST['strID_Usuario'];
+			$dtFechaAsignacion = $_POST['dtFechaAsignacion'];			
+			
 			// Prepara la consulta SQL para insertar un nuevo usuario
-			$sql = "INSERT INTO mantenimiento (`strID_Equipo`, `dtFechaIngreso`, `strDescripcion`) VALUES ('$strID_Equipo', '$dtFechaIngreso', '$strDescripcion');";
+			$sql = "UPDATE equipos SET `strID_Usuario`='$strID_Usuario', `dtFechaAsignacion`='$dtFechaAsignacion' WHERE strID_Equipo='$strID_Equipo'";
 
 			// Ejecuta la consulta
 			if ($conn->query($sql) === TRUE) {	
@@ -64,7 +65,7 @@
 						Swal.fire({
 						icon: 'success',
 						title: 'Registro...!',
-						text: 'Tiquete Registrado exitosamente.', 
+						text: 'Equipo Asignado Exitosamente.', 
 						confirmButtonText: 'Continuar a la página Principal.',
 						}).then((result) => {
 							  if (result.isConfirmed) {
@@ -77,11 +78,11 @@
 						Swal.fire({
 						icon: 'error',
 						title: 'ERROR',
-						text: 'El Tiquete No Se Registró correctamente.', 
+						text: 'El Equipo No Se Asignó correctamente.', 
 						confirmButtonText: 'Volver a intentar.',
 						}).then((result) => {
 							  if (result.isConfirmed) {
-								  window.location.href = 'Generar_Tiquete_Equipo.php'
+								  window.location.href = 'Asignar_Equipo_Usuario.php'
 							  }
 						  });
 					</script>"; 	
@@ -100,7 +101,6 @@
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 		<!--<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>-->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-		<link rel="stylesheet" href="styles.css"> <!-- Enlace al archivo CSS -->
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 	</head>
 
@@ -130,13 +130,12 @@
 					<h5 id="Buscar_Label">Busqueda de Equipos</h5>
 				</div>
 				<div class="modal-body">
-					<form id="Busqueda" method="post" action="Generar_Tiquete_Equipo.php">
+					<form id="Busqueda" method="post" action="Asignar_Equipo_Usuario.php">
 						<input type="hidden" id="ACCION" name="ACCION" value="buscar" />
 						<div id="strID_EquipoField" class="mb-3">
 							<label class="form-label">ID Equipo</label>
 							<input type="text" name="strID_Equipo" id="strID_Equipo" class="form-control" value="<? echo $strID_Equipo; ?>">
-						</div>						
-						
+						</div>
 						<div id="strSerieField" class="mb-3">
 							<label class="form-label">Serie</label>
 							<input type="text" name="strSerie" id="strSerie" class="form-control" value="<? echo $strSerie; ?>" style="background-color: lightgray;" readonly>
@@ -148,18 +147,10 @@
 						<div id="strDescripcionField" class="mb-3">
 							<label class="form-label">Descripcion</label>
 							<input type="text" name="strDescripcion" id="strDescripcion" class="form-control" value="<? echo $strDescripcion; ?>" style="background-color: lightgray;" readonly>
-						</div>							
-						<div id="strID_UsuarioField" class="mb-3">
-							<label class="form-label">ID_Usuario</label>
-							<input type="text" name="strID_Usuario" id="strID_Usuario" class="form-control" value="<? echo $strID_Usuario; ?>" style="background-color: lightgray;" readonly>
-						</div>							
+						</div>	
 						<div id="strCondicionField" class="mb-3">
 							<label class="form-label">Condicion</label>
 							<input type="text" name="strCondicion" id="strCondicion" class="form-control" value="<? echo $strCondicion; ?>" style="background-color: lightgray;" readonly>
-						</div>	
-						<div id="dtFechaAsignacionField" class="mb-3">
-							<label class="form-label">Fecha Asignacion</label>
-							<input type="text" name="dtFechaAsignacion" id="dtFechaAsignacion" class="form-control" value="<? echo $dtFechaAsignacion; ?>" style="background-color: lightgray;" readonly>
 						</div>	
 						<button type="submit" class="btn btn-primary w-100">Buscar Equipo</button>
 					</form>
@@ -171,21 +162,37 @@
 		<div class="container">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 id="Buscar_Label">Agregar Tiquete</h5>
+					<h5 id="Buscar_Label">Asignar Equipo a Usuario</h5>
 				</div>
 				<div class="modal-body">
-					<form id="Busqueda" method="post" action="Generar_Tiquete_Equipo.php">
-						<input type="hidden" id="ACCION" name="ACCION" value="agregar" />
-						<input type="hidden" id="strID_Equipo_Tiquete" name="strID_Equipo_Tiquete" value="<? echo $strID_Equipo; ?>" required/>
-						<div id="dtFechaIngresoField" class="mb-3">
-							<label class="form-label">Fecha Ingreso</label>
-							<input type="date" name="dtFechaIngreso" id="dtFechaIngreso" class="form-control" required>	
-						</div>								
-						<div id="strDescripcionField" class="mb-3">
-							<label class="form-label">Descripción del Problema:</label>
-							<input type="text" name="strDescripcion" id="strDescripcion" class="form-control" required>
-						</div>				
-						<button type="submit" class="btn btn-primary w-100">Agregar Tiquete</button>
+					<form id="Busqueda" method="post" action="Asignar_Equipo_Usuario.php">
+						<input type="hidden" id="ACCION" name="ACCION" value="asignar" />
+						<input type="hidden" id="strID_Equipo_Asignar" name="strID_Equipo_Asignar" value="<? echo $strID_Equipo; ?>" required/>
+						<div id="strID_UsuarioField" class="mb-3">
+							<label class="form-label">ID_Usuario</label>
+							<select class="form-select" name="strID_Usuario" id="strID_Usuario" required>
+								<option value="" disabled selected>Elige un usuario</option>
+								<?php   
+									require 'conexion.php';
+
+									$sql2 = "select * from usuarios order by strID_Usuario asc";
+									$result = $conn->query($sql2);	
+
+									while($row = $result->fetch_assoc())
+									{   
+										$strID_Usuario = $row['strID_Usuario'];
+										$strNombre = $row['strNombre'];
+										$strApellidos = $row['strApellidos'];								
+										echo "<option value='$strID_Usuario'>$strNombre  $strApellidos</option>";
+									}
+								?>
+							</select>
+						</div>
+						<div id="dtFechaAsignacionField" class="mb-3">
+							<label class="form-label">Fecha Asignacion</label>
+							<input type="date" name="dtFechaAsignacion" id="dtFechaAsignacion" class="form-control" required>	
+						</div>										
+						<button type="submit" class="btn btn-primary w-100">Asignar Equipo a Usuario</button>
 					</form>
 				</div>
 			</div>

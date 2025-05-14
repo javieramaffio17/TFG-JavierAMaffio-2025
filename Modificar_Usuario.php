@@ -171,11 +171,16 @@
 						</div>		
 						<div id="strRolField" class="mb-3">
 							<label class="form-label">Rol</label>
-							<input type="text" name="strRol" id="strRol" class="form-control" value="<? echo $strRol; ?>" required>
+							<select name="strRol" id="strRol" required>
+								<option value="">-- Seleccione el Rol --</option>
+								<option value="Tecnico">Técnico</option>
+								<option value="Empleado">Empleado</option>
+								<option value="Administrador">Administrador</option>
+							</select>
 						</div>
 						<div id="dtFechaField" class="mb-3">
 							<label class="form-label">Fecha</label>
-							<input type="date" name="dtFecha" id="dtFecha" class="form-control" min="<?= date('Y-m-d'); ?>" value="<? echo $dtFecha; ?>" required>	
+							<input type="date" name="dtFecha" id="dtFecha" class="form-control" value="<? echo $dtFecha; ?>" required>	
 						</div>	
 						<button type="submit" class="btn btn-primary w-100">Modificar</button>
 					</form>

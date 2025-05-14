@@ -5,67 +5,99 @@
 	session_start();
 			
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {			
-		$correo = $_POST['correo'];
-		$contraseña = $_POST['contraseña'];
-					
+		$correo = trim($_POST['correo']);
+		$contraseña = trim($_POST['contraseña']);
+		
 		$sql = "SELECT * FROM usuarios WHERE strEmail='$correo'";
 		$result = $conn->query($sql);
 		
-		echo("<script>console.log('sql: " . $sql . "');</script>");
-
 		if ($result->num_rows > 0) {
 			$row = $result->fetch_assoc();
-						
-			if ($contraseña == $row['strPassword']) {	
-				// Obtiene los datos del formulario			
-				$_SESSION['strID_Usuario'] = $row['strID_Usuario'];
-				$_SESSION['nroEmpleado'] = $row['nroEmpleado'];
-				$_SESSION['strNombre'] = $row['strNombre'];
-				$_SESSION['strApellidos'] = $row['strApellidos'];
-				$_SESSION['strEmail'] = $row['strEmail'];
-				$_SESSION['strRol'] = $row['strRol'];	
-		
+			
+			if (trim($row['strRol']) == trim('Empleado')) {	
 				echo "<script>
-					Swal.fire({
-					icon: 'success',
-					title: 'Logueo...!',
-					text: 'Usuario Logueado correctamente.', 
-					confirmButtonText: 'Continuar a la página Principal.',
-					}).then((result) => {
-						  if (result.isConfirmed) {
-							  window.location.href = 'Principal.php'
-						  }
-					  });
-				</script>"; 			
+							Swal.fire({
+							icon: 'error',
+							title: 'ERROR',
+							text: 'El usuario no tiene permiso para utilizar el sistema.', 
+							confirmButtonText: 'Volver a intentar.',
+							}).then((result) => {
+								if (result.isConfirmed) {
+									window.location.href = 'Login.php'
+								}
+							});
+					</script>"; 
 			} else {
-				echo "<script>
-					Swal.fire({
-					icon: 'error',
-					title: 'ERROR',
-					text: 'Contraseña incorrecta.', 
-					confirmButtonText: 'Volver a intentar.',
-					}).then((result) => {
-						  if (result.isConfirmed) {
-							  window.location.href = 'Login.php'
-						  }
-					  });
-				</script>"; 
+				$boolPrimeraVez = $row['boolPrimeraVez'];
+
+				if ($boolPrimeraVez == 0) {	
+					// Obtiene los datos del formulario			
+					$_SESSION['strID_Usuario'] = trim($row['strID_Usuario']);
+					echo "<script>
+								Swal.fire({
+								icon: 'success',
+								title: 'Logueo...!',
+								text: 'El Usuario Debe Crear Una Contraseña Para Loguearse.', 
+								confirmButtonText: 'Ir a la Página de Crear Contraseña.',
+								}).then((result) => {
+									if (result.isConfirmed) {
+										window.location.href = 'Crear_Contraseña.php'
+									}
+								});
+						</script>"; 		
+				} else {						
+					if ($contraseña == trim($row['strPassword'])) {	
+						// Obtiene los datos del formulario			
+						$_SESSION['strID_Usuario'] = trim($row['strID_Usuario']);
+						$_SESSION['nroEmpleado'] = trim($row['nroEmpleado']);
+						$_SESSION['strNombre'] = trim($row['strNombre']);
+						$_SESSION['strApellidos'] = trim($row['strApellidos']);
+						$_SESSION['strEmail'] = trim($row['strEmail']);
+						$_SESSION['strRol'] = trim($row['strRol']);	
+
+						echo "<script>
+									Swal.fire({
+									icon: 'success',
+									title: 'Logueo...!',
+									text: 'Usuario Logueado correctamente.', 
+									confirmButtonText: 'Continuar a la página Principal.',
+									}).then((result) => {
+										  if (result.isConfirmed) {
+											  window.location.href = 'Principal.php'
+										  }
+									  });
+							</script>"; 			
+					} else {
+						echo "<script>
+									Swal.fire({
+									icon: 'error',
+									title: 'ERROR',
+									text: 'Contraseña incorrecta.', 
+									confirmButtonText: 'Volver a intentar.',
+									}).then((result) => {
+										if (result.isConfirmed) {
+											window.location.href = 'Login.php'
+										}
+									});
+							</script>"; 
+					}
+				}
 			}
 		} else {
 			echo "<script>
-					Swal.fire({
-					icon: 'error',
-					title: 'ERROR',
-					text: 'Usuario incorrecto.', 
-					confirmButtonText: 'Volver a intentar.',
-					}).then((result) => {
-						  if (result.isConfirmed) {
-							  window.location.href = 'Login.php'
-						  }
-					  });
+						Swal.fire({
+						icon: 'error',
+						title: 'ERROR',
+						text: 'Usuario incorrecto.', 
+						confirmButtonText: 'Volver a intentar.',
+						}).then((result) => {
+							if (result.isConfirmed) {
+								window.location.href = 'Login.php'
+							}
+						});
 				</script>"; 
 		}
-	}
+	}	
 ?>
 
 <!DOCTYPE html>
@@ -114,7 +146,7 @@
 						</div>
 						<div id="password" class="mb-3">
 							<label class="form-label">Contraseña</label>
-							<input type="password" name="contraseña" id="contraseña" class="form-control" required>
+							<input type="password" name="contraseña" id="contraseña" class="form-control">
 						</div>
 						<button type="submit" class="btn btn-primary w-100">Aceptar</button>
 					</form>

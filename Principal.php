@@ -47,14 +47,17 @@
 		<div class="container">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Sistema de Inventario de Portátiles</h5>
+					<h5 class="modal-title">Sistema de Inventario de Equipos y Usuarios</h5>
 				</div>
 				<div class="modal-body">
 					<button id="botonAdminitrados" class="btn btn-primary w-100 mb-2" onclick="location.href='Registro_Equipos.php'">Registro de Equipos</button>
-					<button id="BotonUsuario" class="btn btn-success w-100 mb-2" onclick="location.href=''">Busqueda de Equipos</button>
-					<button id="BotonUsuario" class="btn btn-primary w-100 mb-2" onclick="location.href=''">Estado de los Equipos</button>
-					<button id="BotonUsuario" class="btn btn-success w-100 mb-2" onclick="location.href=''">Gestor de Averías</button>
-					<button id="BotonUsuario" class="btn btn-primary w-100 mb-2" onclick="location.href=''">Reporte de Averías</button>
+					<button id="BotonUsuario" class="btn btn-success w-100 mb-2" onclick="location.href='Asignar_Equipo_Usuario.php'">Asignar Equipo a Usuario</button>
+					<button id="BotonUsuario" class="btn btn-primary w-100 mb-2" onclick="location.href='Busqueda_Equipo.php'">Busqueda de Equipos</button>
+					<button id="BotonUsuario" class="btn btn-success w-100 mb-2" onclick="location.href='Generar_Tiquete_Equipo.php'">Generar Tiquete de Mantenimiento</button>
+					<button id="BotonUsuario" class="btn btn-primary w-100 mb-2" onclick="location.href='Cerrar_Tiquete_Equipo.php'">Cerrar Tiquete de Mantenimiento</button>
+					<button id="BotonUsuario" class="btn btn-success w-100 mb-2" onclick="location.href='Reporte_Mantenimientos.php'">Reporte de Mantenimientos</button>
+					<button id="BotonUsuario" class="btn btn-primary w-100 mb-2" onclick="location.href='Reporte_Equipos.php'">Reporte de Equipos</button>
+					<button id="BotonUsuario" class="btn btn-success w-100 mb-2" onclick="location.href='Reporte_Usuarios.php'">Reporte de Usuarios</button>
 				</div>
 			</div>
 		</div>

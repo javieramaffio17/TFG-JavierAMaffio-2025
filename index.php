@@ -10,13 +10,6 @@
 	$_SESSION['strApellidos'] = "";
 	$_SESSION['strEmail'] = "";
 	$_SESSION['strRol'] = "";	
-
-	echo "<script>console.log('Debug Objects: " . $_SESSION['strID_Usuario'] . "' );</script>";
-	echo "<script>console.log('Debug Objects: " . $_SESSION['nroEmpleado'] . "' );</script>";
-	echo "<script>console.log('Debug Objects: " . $_SESSION['strNombre'] . "' );</script>";
-	echo "<script>console.log('Debug Objects: " . $_SESSION['strApellidos'] . "' );</script>";
-	echo "<script>console.log('Debug Objects: " . $_SESSION['strEmail'] . "' );</script>";
-	echo "<script>console.log('Debug Objects: " . $_SESSION['strRol'] . "' );</script>";
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +42,7 @@
 		<div class="container">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Sistema de Inventario de Portátiles</h5>
+					<h5 class="modal-title">Sistema de Inventario de Equipos de Cómputo</h5>
 				</div>
 				<div class="modal-body">
 					<button id="botonAdminitrados" class="btn btn-primary w-100 mb-2" onclick="location.href='Login_Admin.php'">Iniciar como Administrador</button>

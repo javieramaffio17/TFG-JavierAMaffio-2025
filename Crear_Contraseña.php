@@ -1,8 +1,49 @@
-<?php	
+<?php			
 	include 'conexion.php';
 	include 'sweetAlert.php';
-		
+	
 	session_start();
+			
+	if ($_SERVER["REQUEST_METHOD"] == "POST") {			
+		// Obtiene los datos del formulario
+		$strID_Usuario = trim($_SESSION['strID_Usuario']);
+		$strPassword = trim($_POST['strPassword']);
+		$strConfirmPassword = trim($_POST['strConfirmPassword']);
+		
+		echo "<script>console.log('strID_Usuario: " . $strID_Usuario . "' );</script>";
+
+		// Prepara la consulta SQL para insertar un nuevo usuario
+		$sql = "UPDATE usuarios SET `strPassword`='$strPassword', boolPrimeraVez=1 WHERE strID_Usuario='$strID_Usuario'";
+
+		// Ejecuta la consulta
+		if ($conn->query($sql) === TRUE) {	
+			echo "<script>
+						Swal.fire({
+						icon: 'success',
+						title: 'Registro...!',
+						text: 'Contraseña Creada Exitosamente.', 
+						confirmButtonText: 'Volver a la Página de Logueo.',
+						}).then((result) => {
+							  if (result.isConfirmed) {
+								  window.location.href = 'Login.php'
+							  }
+						  });
+					</script>"; 			
+		} else {
+			echo "<script>
+						Swal.fire({
+						icon: 'error',
+						title: 'ERROR',
+						text: 'La Contraseña No Se Creó Correctamente.', 
+						confirmButtonText: 'Volver a intentar.',
+						}).then((result) => {
+							  if (result.isConfirmed) {
+								  window.location.href = 'Crear_Contraseña.php'
+							  }
+						  });
+					</script>"; 	
+		}
+	}
 ?>
 
 <!DOCTYPE html>
@@ -10,14 +51,14 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>METALCO</title>
+		<title>Metalco</title>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 		<!--<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>-->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-		<link rel="stylesheet" href="styles.css"> <!-- Enlace al archivo CSS -->
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 	</head>
 
-	<body>
+	<body>	
 		<!-- Navbar -->
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container-fluid">
@@ -30,27 +71,34 @@
 				</button>	
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav ms-auto">
-						<li class="nav-item"><a class="nav-link" id="logInBtnNavbar" href="Index.php">Volver al Inicio</a></li>
+						<li class="nav-item"><a class="nav-link" id="logInBtnNavbar" href="Login.php">Volver al Logueo</a></li>
 					</ul>
 				</div>				
 			</div>
 		</nav>
 		
-		<!-- Modal de Opciones Iniciales -->
+		<!-- Modal de Autenticación (Sign In)  -->
 		<div class="container">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Sistema de Inventario de Portátiles - Administrador</h5>
+					<h5 id="Crear_Contraseña_Label">Crear Contraseña</h5>
 				</div>
 				<div class="modal-body">
-					<button id="BotonUsuario" class="btn btn-primary w-100 mb-2" onclick="location.href='Agregar_Usuario.php'">Agregar Usuario</button>				
-					<button id="BotonUsuario" class="btn btn-success w-100 mb-2" onclick="location.href='Modificar_Usuario.php'">Modificar Usuario</button>
-					<button id="BotonUsuario" class="btn btn-primary w-100 mb-2" onclick="location.href='Eliminar_Usuario.php'">Eliminar Usuario</button>	
-					<button id="BotonUsuario" class="btn btn-success w-100 mb-2" onclick="location.href='Nueva_Contraseña.php'">Nueva Contraseña de Usuario</button>
+					<form id="CrearContraseña" method="post" action="Crear_Contraseña.php">				
+						<div id="password" class="mb-3">
+							<label class="form-label">Contraseña</label>
+							<input type="password" name="strPassword" id="strPassword" class="form-control" required>
+						</div>
+						<div id="password" class="mb-3">
+							<label class="form-label">Confirmar Contraseña</label>
+							<input type="password" name="strConfirmPassword" id="strConfirmPassword" class="form-control" required>
+						</div>
+						<button type="submit" class="btn btn-primary w-100">Aceptar</button>
+					</form>
 				</div>
 			</div>
 		</div>
-
+		
 		<!-- Pie de página -->
 		<footer class="bg-dark text-light text-center py-3 mt-5">
 			<p>&copy; 2025 Metalco. Todos los derechos reservados.</p>

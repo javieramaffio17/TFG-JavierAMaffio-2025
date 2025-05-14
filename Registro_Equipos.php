@@ -10,12 +10,10 @@
 		$strSerie = $_POST['strSerie'];
 		$strModelo = $_POST['strModelo'];
 		$strDescripcion = $_POST['strDescripcion'];
-		$strID_Usuario = $_POST['strID_Usuario'];
 		$strCondicion = $_POST['strCondicion'];
-		$dtFechaAsignacion = $_POST['dtFechaAsignacion'];
 		
 		// Prepara la consulta SQL para insertar un nuevo usuario
-		$sql = "INSERT INTO equipos (`strID_Equipo`, `strSerie`, `strModelo`, `strDescripcion`, `strID_Usuario`, `strCondicion`, `dtFechaAsignacion`) VALUES ('$strID_Equipo', '$strSerie', '$strModelo', '$strDescripcion', '$strID_Usuario', '$strCondicion', '$dtFechaAsignacion');";
+		$sql = "INSERT INTO equipos (`strID_Equipo`, `strSerie`, `strModelo`, `strDescripcion`, `strCondicion`) VALUES ('$strID_Equipo', '$strSerie', '$strModelo', '$strDescripcion', '$strCondicion');";
 
 		// Ejecuta la consulta
 		if ($conn->query($sql) === TRUE) {				
@@ -104,37 +102,10 @@
 							<label class="form-label">Descripcion</label>
 							<input type="text" name="strDescripcion" id="strDescripcion" class="form-control" required>
 						</div>	
-						
-						<div id="strID_UsuarioField" class="mb-3">
-							<label class="form-label">ID_Usuario</label>
-							<select class="form-select" name="strID_Usuario" id="strID_Usuario" required>
-								<option value="" disabled selected>Elige un usuario</option>
-								<?php   
-									require 'conexion.php';
-
-									$sql2 = "select * from usuarios order by strID_Usuario asc";
-									$result = $conn->query($sql2);	
-
-									while($row = $result->fetch_assoc())
-									{   
-										$strID_Usuario = $row['strID_Usuario'];
-										$strNombre = $row['strNombre'];
-										$strApellidos = $row['strApellidos'];								
-										echo "<option value='$strID_Usuario'>$strNombre  $strApellidos</option>";
-									}
-								?>
-							</select>
-						</div>
-						
-						
 						<div id="strCondicionField" class="mb-3">
 							<label class="form-label">Condicion</label>
 							<input type="text" name="strCondicion" id="strCondicion" class="form-control" required>
-						</div>						
-						<div id="dtFechaAsignacionField" class="mb-3">
-							<label class="form-label">Fecha Asignacion</label>
-							<input type="date" name="dtFechaAsignacion" id="dtFechaAsignacion" class="form-control" min="<?= date('Y-m-d'); ?>" required>	
-						</div>									
+						</div>														
 						<button type="submit" class="btn btn-primary w-100">Agregar Equipo</button>
 					</form>
 				</div>

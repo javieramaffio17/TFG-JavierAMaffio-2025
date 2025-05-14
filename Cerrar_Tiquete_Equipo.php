@@ -14,8 +14,6 @@
 			$sql = "SELECT * FROM mantenimiento WHERE nroTiquete=$nroTiquete";
 			$result = $conn->query($sql);
 
-			//echo("<script>console.log('sql: " . $sql . "');</script>");
-
 			if ($result->num_rows > 0) {
 				$row = $result->fetch_assoc();	
 
@@ -54,15 +52,9 @@
 			$nroTiquete_Cierre = trim($_POST['nroTiquete_Cierre']);
 			$dtFechaResolucion = $_POST['dtFechaResolucion'];
 			$strSolucion = $_POST['strSolucion'];
-			
-			echo("<script>console.log('nroTiquete_Cierre: " . $nroTiquete_Cierre . "');</script>");			
-			echo("<script>console.log('dtFechaResolucion: " . $dtFechaResolucion . "');</script>");
-			echo("<script>console.log('dtFechaResolucion: " . $dtFechaResolucion . "');</script>");
 
 			// Prepara la consulta SQL para insertar un nuevo usuario
 			$sql = "UPDATE mantenimiento SET `dtFechaResolucion`='$dtFechaResolucion', `strSolucion`='$strSolucion' WHERE nroTiquete=$nroTiquete_Cierre";
-			
-			echo("<script>console.log('sql: " . $sql . "');</script>");
 
 			// Ejecuta la consulta
 			if ($conn->query($sql) === TRUE) {	
@@ -144,36 +136,15 @@
 						<div id="strID_EquipoField" class="mb-3">
 							<label class="form-label">Número de Tiquete</label>
 							<input type="text" name="nroTiquete" id="nroTiquete" class="form-control" value="<? echo $nroTiquete; ?>" required>
-						</div>	
-						
+						</div>							
 						<div id="strID_EquipoField" class="mb-3">
 							<label class="form-label">Id Equipo</label>
 							<input type="text" name="strID_Equipo" id="strID_Equipo" class="form-control" value="<? echo $strID_Equipo; ?>" style="background-color: lightgray;" readonly>
 						</div>		
-						<div id="strSerieField" class="mb-3">
-							<label class="form-label">Serie</label>
-							<input type="text" name="strSerie" id="strSerie" class="form-control" value="<? echo $strSerie; ?>" style="background-color: lightgray;" readonly>
-						</div>						
-						<div id="strModeloField" class="mb-3">
-							<label class="form-label">Modelo</label>
-							<input type="text" name="strModelo" id="strModelo" class="form-control" value="<? echo $strModelo; ?>" style="background-color: lightgray;" readonly>
-						</div>
 						<div id="strDescripcionField" class="mb-3">
 							<label class="form-label">Descripcion</label>
 							<input type="text" name="strDescripcion" id="strDescripcion" class="form-control" value="<? echo $strDescripcion; ?>" style="background-color: lightgray;" readonly>
-						</div>							
-						<div id="strID_UsuarioField" class="mb-3">
-							<label class="form-label">ID_Usuario</label>
-							<input type="text" name="strID_Usuario" id="strID_Usuario" class="form-control" value="<? echo $strID_Usuario; ?>" style="background-color: lightgray;" readonly>
-						</div>							
-						<div id="strCondicionField" class="mb-3">
-							<label class="form-label">Condicion</label>
-							<input type="text" name="strCondicion" id="strCondicion" class="form-control" value="<? echo $strCondicion; ?>" style="background-color: lightgray;" readonly>
-						</div>	
-						<div id="dtFechaAsignacionField" class="mb-3">
-							<label class="form-label">Fecha Asignacion</label>
-							<input type="text" name="dtFechaAsignacion" id="dtFechaAsignacion" class="form-control" value="<? echo $dtFechaAsignacion; ?>" style="background-color: lightgray;" readonly>
-						</div>	
+						</div>												
 						<button type="submit" class="btn btn-primary w-100">Buscar Equipo</button>
 					</form>
 				</div>
